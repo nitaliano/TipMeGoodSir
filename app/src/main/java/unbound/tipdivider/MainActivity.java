@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,18 @@ public class MainActivity extends ActionBarActivity {
 
         tips = new Tips(new String[]{"10%", "15%", "18%", "20%"});
         radioGroupTips = (RadioGroup) findViewById(R.id.tips);
-        radioGroupTips.setOnCheckedChangeListener(tips);
+        radioGroupTips.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(RadioGroup group, int id) {
+                RadioButton radioButton = (RadioButton) group.findViewById(id);
+
+                if (radioButton == null) {
+                    return;
+                }
+
+                tips.setSelected(radioButton.getText().toString());
+            }
+        });
 
         editTextAmount = (EditText) findViewById(R.id.billAmount);
         textViewTipAmount = (TextView) findViewById(R.id.tipAmount);

@@ -1,14 +1,10 @@
 package unbound.tipdivider;
 
-import android.provider.MediaStore;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Tips implements RadioGroup.OnCheckedChangeListener {
+public class Tips {
     private Map<String, Tip> tips = new HashMap<String, Tip>();
     private Tip selectedTip;
 
@@ -37,17 +33,14 @@ public class Tips implements RadioGroup.OnCheckedChangeListener {
         return decimalFormat.format(amount * this.getSelectedTip().getValue()).concat("%");
     }
 
-    public void onCheckedChanged(RadioGroup group, int id) {
-        RadioButton radioButton = (RadioButton) group.findViewById(id);
-        if (radioButton == null) {
-            return;
-        }
+    public boolean setSelected(String key) {
+        Tip tip = this.tips.get(key);
 
-        Tip tip = this.tips.get(radioButton.getText());
         if (tip == null) {
-            return;
+            return false;
         }
 
         this.selectedTip = tip;
+        return true;
     }
 }
