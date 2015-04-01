@@ -5,26 +5,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Tips {
-    private Map<String, Tip> tips = new HashMap<String, Tip>();
+    private Map<String, Tip> tips;
     private Tip selectedTip;
 
     public Tips(String[] tipArray) {
-      for (int i = 0; i < tipArray.length; i++) {
-          String tipDisplay = tipArray[i];
-
-          tips.put(tipDisplay, new Tip(tipDisplay));
-
-          if (i == 0) {
-              this.selectedTip = tips.get(tipDisplay);
-          }
-      }
+      tips = new HashMap<String, Tip>();
     }
 
     public Tip getSelectedTip() {
         return this.selectedTip;
     }
 
-    private Tip getTip(String key) {
+    public boolean addTip(String key) {
+        if (tips.containsKey(key)) {
+            return false;
+        }
+        tips.put(key, new Tip(key));
+        return true;
+    }
+
+    public Tip getTip(String key) {
         return tips.get(key);
     }
 

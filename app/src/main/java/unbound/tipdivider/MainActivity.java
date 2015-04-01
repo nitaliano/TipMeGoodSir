@@ -1,10 +1,11 @@
 package unbound.tipdivider;
 
+import android.support.v7.app.ActionBar;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,10 +14,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DecimalFormat;
-
 
 public class MainActivity extends ActionBarActivity {
+    private final int ACTION_BAR_BACKGROUND_COLOR = Color.parseColor("#fa6800");
     private RadioGroup radioGroupTips;
     private Button btnSubmit;
     private EditText editTextAmount;
@@ -29,9 +29,25 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         final Context context = this;
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(ACTION_BAR_BACKGROUND_COLOR));
 
         tips = new Tips(new String[]{"10%", "15%", "18%", "20%"});
         radioGroupTips = (RadioGroup) findViewById(R.id.tips);
+
+        for (int i = 0; i < radioGroupTips.getChildCount(); i++) {
+            RadioButton btn = (RadioButton) radioGroupTips.getChildAt(i);
+
+            if (btn != null) {
+                String tipPercent = btn.getText().toString();
+                tips.addTip(tipPercent);
+
+                if (btn.isChecked()) {
+                    tips.setSelected(tipPercent);
+                }
+            }
+        }
+
         radioGroupTips.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(RadioGroup group, int id) {
@@ -47,6 +63,7 @@ public class MainActivity extends ActionBarActivity {
 
         editTextAmount = (EditText) findViewById(R.id.billAmount);
         textViewTipAmount = (TextView) findViewById(R.id.tipAmount);
+        textViewTipAmount.setFocusable(false);
 
         btnSubmit = (Button) findViewById(R.id.btnTip);
         btnSubmit.setOnClickListener(new Button.OnClickListener(){
@@ -59,27 +76,5 @@ public class MainActivity extends ActionBarActivity {
                 }
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
